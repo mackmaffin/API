@@ -552,3 +552,7 @@ async def get_characters(
     paginated_data = filtered_data[start_index:end_index]
 
     return paginated_data
+
+@app.get("/")
+def read_root():
+    return {"message": "API is working"}
