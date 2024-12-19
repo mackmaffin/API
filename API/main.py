@@ -552,7 +552,7 @@ async def get_characters(
     paginated_data = filtered_data[start_index:end_index]
 
     total_pages = (total_items + size - 1) // size
-    next_page = page + 1 if page < total_pages else None
+    next_page = page + 1 if page < total_pages else total_pages
     return {"meta": 
       {"pagination": {
           "current": page,
