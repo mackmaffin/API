@@ -540,7 +540,7 @@ async def get_characters(
     fullName: Optional[str] = Query(None, description="Поиск по имени"),
     page: int = Query(1, ge=1, description="Номер страницы"),
     size: int = Query(10, ge=1, description="Размер страницы")
-) -> List[dict]:
+):
     filtered_data = (
         [item for item in data if fullName.lower() in item["fullName"].lower()]
         if fullName else data
@@ -550,7 +550,11 @@ async def get_characters(
     end_index = page * size
     paginated_data = filtered_data[start_index:end_index]
 
-    return paginated_data
+    return {"meta": {"pagination": {
+      "current": page,
+      "next": page + 1,
+      "last": (len(data) + size) // size
+    }}, "data": paginated_data}
 
 @app.get("/")
 def read_root():
