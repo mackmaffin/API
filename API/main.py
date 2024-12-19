@@ -546,15 +546,22 @@ async def get_characters(
         if fullName else data
     )
 
+    total_items = len(filtered_data)
     start_index = (page-1) * size
     end_index = page * size
     paginated_data = filtered_data[start_index:end_index]
 
-    return {"meta": {"pagination": {
-      "current": page,
-      "next": page + 1,
-      "last": (len(data) + size) // size
-    }}, "data": paginated_data}
+    total_pages = (total_items + size - 1) // size
+    next_page = page + 1 if page < total_pages else None
+    return {"meta": 
+      {"pagination": {
+          "current": page,
+          "next": next_page,
+          "last": total_pages
+        }
+      }, 
+      "data": paginated_data
+    }
 
 @app.get("/")
 def read_root():
